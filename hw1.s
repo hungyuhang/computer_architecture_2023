@@ -95,52 +95,33 @@ clz:
     sw ra, 0(sp)
     
     # a0 a1 = x
-    
-    # x |= (x >> 1);
+
+    bne a1, zero, clz_fill_ones_upper
+clz_fill_ones_lower:
     srli t0, a0, 1
-    slli t1, a1, 31
-    or t0, t0, t1
-    srli t1, a1, 1  # t0 t1 = x >> 1
     or a0, a0, t0
-    or a1, a1, t1   # a0 a1 = x | (x >> 1)
-    
-    # x |= (x >> 2);
     srli t0, a0, 2
-    slli t1, a1, 30
-    or t0, t0, t1
-    srli t1, a1, 2  # t0 t1 = x >> 2
     or a0, a0, t0
-    or a1, a1, t1   # a0 a1 = x | (x >> 2)
-    
-    # x |= (x >> 4);
     srli t0, a0, 4
-    slli t1, a1, 28
-    or t0, t0, t1
-    srli t1, a1, 4  # t0 t1 = x >> 4
     or a0, a0, t0
-    or a1, a1, t1   # a0 a1 = x | (x >> 4)
-    
-    # x |= (x >> 8);
     srli t0, a0, 8
-    slli t1, a1, 24
-    or t0, t0, t1
-    srli t1, a1, 8  # t0 t1 = x >> 8
     or a0, a0, t0
-    or a1, a1, t1   # a0 a1 = x | (x >> 8)
-    
-    # x |= (x >> 16);
     srli t0, a0, 16
-    slli t1, a1, 16
-    or t0, t0, t1
-    srli t1, a1, 16 # t0 t1 = x >> 16
     or a0, a0, t0
-    or a1, a1, t1   # a0 a1 = x | (x >> 16)
-    
-    # x |= (x >> 32);
-    mv t0, a1
-    mv t1, zero     # t0 t1 = x >> 32
-    or a0, a0, t0
-    or a1, a1, t1   # a0 a1 = x | (x >> 32)
+    j clz_fill_ones_end
+clz_fill_ones_upper:
+    srli t1, a1, 1
+    or a1, a1, t1
+    srli t1, a1, 2
+    or a1, a1, t1
+    srli t1, a1, 4
+    or a1, a1, t1
+    srli t1, a1, 8
+    or a1, a1, t1
+    srli t1, a1, 16
+    or a1, a1, t1
+    li a0, 0xffffffff
+clz_fill_ones_end:
     
     
     # x -= ((x >> 1) & 0x5555555555555555);
