@@ -38,7 +38,13 @@ main_loop:
     lw a0, 0(s2)        # a0 stores the pointer to first data in cmp_data_x
     addi a1, a0, 8      # a1 stores the pointer to second data in cmp_data_x
     jal ra, pimo
-    jal ra, print_dec   # print the result (which is in a0)
+    
+    li a7, 1            # tell ecall to print decimal
+    ecall               # print result of pimo (which is in a0)
+    li a0, 32           # 32 is " " in ASCII
+    li a7, 11           # tell ecall to print char
+    ecall               # print space
+    
     addi s2, s2, 4      # s2 points to next cmp_data_x
     addi s1, s1, 1      # counter++
     bne s1, s0, main_loop
