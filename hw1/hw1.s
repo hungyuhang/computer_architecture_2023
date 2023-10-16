@@ -67,13 +67,13 @@ pimo:
     
     lw a0, 0(s0)
     lw a1, 4(s0)    # a0 a1 is now the value of x0
-    jal ra clz
+    jal ra, clz
     li s2, 63
     sub s2, s2, a0  # s2 is now exp_x0
     
     lw a0, 0(s1)
     lw a1, 4(s1)    # a1 a0 is now the value of x1
-    jal ra clz
+    jal ra, clz
     li s3, 63
     sub s3, s3, a0  # s3 is now exp_x1
  
